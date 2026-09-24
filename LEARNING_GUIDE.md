@@ -17,6 +17,10 @@
 
 **پروژه‌ی مرجع:** همون پروژه‌ی اصلی (حدود ۳۸ فایل Kotlin، ۹۵۰۰ خط) + فایل `ARCHITECTURE.md`.
 **پروژه‌ی تمرینی:** پروژه‌ی جدیدی که از صفر می‌سازیم و در Git نگه‌داری می‌شه.
+- package name: `com.alirezahalvaei.homanegar`
+- تنظیمات ساخت: Empty Activity (Compose) · Kotlin · Min SDK 26 · Kotlin DSL
+- ریپوی مرجع (پروژه‌ی اصلی): Private، فقط برای مراجعه
+- ریپوی تمرینی: همونی که آخر کار (گام ۱۳) نسخه‌ی رزومه می‌شه
 
 ---
 
@@ -28,7 +32,7 @@
 4. **تایپ، نه کپی‌پیست.** کد رو خودم تایپ می‌کنم.
 5. **آخر هر گام برنامه باید اجرا بشه.**
 6. **آخر هر گام:** خلاصه + سؤال‌های طلایی + نکته‌های طلایی. قبل از رفتن به گام بعد، چند سؤال رو بدون نگاه کردن جواب می‌دم.
-7. **هر گام = یک commit در Git.** قالب پیام: `step-01: splash screen`
+7. **Git:** در طول هر گام هر جا لازم باشه commit/push می‌کنیم (Claude می‌گه کجا). پیام‌ها با قالب **Conventional Commits** نوشته می‌شن (بخش ۷ رو ببین) و آخر هر گام یک **tag** زده می‌شه، مثلاً `step-00`.
 8. **برای هر یکی دو گام یک چت جدید.** اول چت: این فایل + فایل‌های مرجع همون گام.
 
 ---
@@ -51,7 +55,7 @@
 
 | گام | عنوان | روش | فایل‌های مرجع اصلی (از پروژه‌ی اصلی) | وضعیت |
 |---|---|---|---|---|
-| ۰ | اسکلت پروژه | ساختن | `settings.gradle.kts`، `build.gradle.kts` (ریشه و app)، `gradle/libs.versions.toml`، `AndroidManifest.xml`، `di/MyApplication.kt`، `MainActivity.kt`، `res/values/*` | ⬜ |
+| ۰ | اسکلت پروژه | ساختن | `settings.gradle.kts`، `build.gradle.kts` (ریشه و app)، `gradle/libs.versions.toml`، `AndroidManifest.xml`، `di/MyApplication.kt`، `MainActivity.kt`، `res/values/*` | 🔄 |
 | ۱ | اسپلش | ساختن | `presentation/splash/SplashScreen.kt`، `core/locale/Strings.kt` (بخش پایه)، `presentation/theme/Theme.kt`، `domain/business/BusinessCatalog.kt` (فقط `BusinessPalette`)، `presentation/app/AppRoot.kt` (NavHost ساده) | ⬜ |
 | ۲ | تنظیمات پایه (زبان، تم، تقویم، RTL) | ساختن | `domain/model/Models.kt` (`AppSettings`، `ThemeMode`)، `domain/repository/Repositories.kt` (`SettingsRepository`)، `data/settings/SettingsRepositoryImpl.kt`، `presentation/app/AppViewModel.kt`، `presentation/components/Components.kt` (`LocalAppSettings`)، `core/calendar/AppCalendar.kt` (`CalendarSystem`) | ⬜ |
 | ۳ | دیتابیس و Hilt (اولین جدول: Section) | ساختن | `data/local/entity/Entities.kt`، `data/local/dao/Daos.kt`، `data/local/database/AppDatabase.kt`، `data/repository/Mappers.kt`، `data/repository/RepositoryImpls.kt`، `di/Modules.kt`، `Models.kt` (`Section`، `SectionKind`) | ⬜ |
@@ -66,14 +70,14 @@
 | ۱۲ | صفحه‌ی تنظیمات و مدیریت بخش‌ها | مرور + تمرین | `presentation/settings/SettingsScreen.kt` (+`SettingsViewModel`)، `DeveloperSection.kt`، `SectionDao.deleteWithData` | ⬜ |
 | ۱۳ | آماده‌سازی برای رزومه | پروژه‌ی نهایی | `MIGRATION_1_2`، رفع باگ‌های فصل ۱۰ `ARCHITECTURE.md`، تغییر `com.example`، فعال کردن R8، تست، README، انتشار در GitHub | ⬜ |
 
-**گام فعلی:** ۰ (شروع نشده)
+**گام فعلی:** ۰ — پروژه ساخته شده، `.gitignore` تنظیم شده و اولین push انجام شده. محتوای گام ۰ (فایل‌های gradle و کتابخونه‌ها) هنوز شروع نشده.
 
 ---
 
-## ۵. تصمیم‌های باز
+## ۵. تصمیم‌ها
 
-- [ ] **اسم نهایی اپ:** HomaNegar یا همانگار (Hamangar)؟ در کد فعلی «Hamangar» استفاده شده. ← در گام ۰ تصمیم گرفته می‌شه.
-- [ ] **package name / applicationId:** به‌جای `com.example.myapplication`. ← در گام ۰.
+- [x] **package name / applicationId:** `com.alirezahalvaei.homanegar`
+- [x] **اسم اپ:** HomaNegar. در کد مرجع اسم‌هایی مثل `HamangarTheme` هست؛ در پروژه‌ی تمرینی به `HomaNegarTheme` و مشابه تغییر می‌کنن.
 
 ---
 
@@ -84,12 +88,49 @@
 ```
 این راهنمای پروژه‌ی آموزشی HomaNegar هست. طبق قوانین همین فایل پیش برو.
 می‌خوایم گام [شماره] رو شروع کنیم. فایل‌های مرجع این گام از پروژه‌ی اصلی رو هم فرستادم.
-کد فعلی پروژه‌ی تمرینی‌ام تا آخر گام قبل: [لینک GitHub یا فایل‌ها]
+کد فعلی پروژه‌ی تمرینی‌ام تا آخر گام قبل: [فایل‌های لازم یا zip پروژه‌ی تمرینی]
 ```
 
 ---
 
-## ۷. خلاصه‌ها، سؤال‌ها و نکته‌های طلایی
+## ۷. Git
+
+### قالب پیام commit (Conventional Commits)
+
+```
+نوع(بخش): توضیح کوتاه به انگلیسی، با فعل امری
+```
+
+| نوع | کاربرد | مثال |
+|---|---|---|
+| `feat` | قابلیت جدید | `feat(splash): add animated splash screen` |
+| `fix` | رفع باگ | `fix(inventory): prevent negative stock on undo` |
+| `refactor` | بهتر کردن کد بدون تغییر رفتار | `refactor(data): extract shared date helpers` |
+| `docs` | مستندات | `docs: update learning guide` |
+| `chore` | کارهای جانبی و تنظیمات | `chore: initial project setup` |
+| `build` | gradle و وابستگی‌ها | `build: add hilt and room dependencies` |
+| `test` | تست | `test(calendar): add jalali conversion tests` |
+
+### دستورهایی که یاد گرفتم
+
+| دستور | کارش |
+|---|---|
+| `git config --global user.name "..."` / `user.email` | معرفی خودم به Git (یک بار روی هر کامپیوتر) |
+| `git init` | تبدیل پوشه به مخزن Git (ساخت پوشه‌ی مخفی `.git`) |
+| `git status` | نمایش فایل‌های تغییرکرده؛ **هر وقت شک داشتم، این رو می‌زنم** |
+| `git add .` | انتخاب همه‌ی تغییرات برای commit بعدی |
+| `git commit -m "..."` | ثبت یک «عکس» از پروژه در تاریخچه (فقط روی کامپیوتر خودم) |
+| `git branch -M main` | گذاشتن اسم `main` روی شاخه‌ی اصلی |
+| `git remote add origin <آدرس>` | معرفی آدرس ریپوی GitHub با اسم مستعار `origin` |
+| `git push -u origin main` | فرستادن commitها به GitHub؛ از دفعه‌ی بعد فقط `git push` |
+
+### فایل `.gitignore`
+
+فایلی در ریشه‌ی پروژه که به Git می‌گه چه چیزهایی رو آپلود نکنه: فایل‌های ساختگی و حجیم (`build`، `.gradle`)، فایل‌های شخصی سیستم (`local.properties`) و فایل‌های حساس (کلید امضا `*.jks`).
+
+---
+
+## ۸. خلاصه‌ها، سؤال‌ها و نکته‌های طلایی
 
 > آخر هر گام، بخش همون گام اینجا اضافه می‌شه.
 
