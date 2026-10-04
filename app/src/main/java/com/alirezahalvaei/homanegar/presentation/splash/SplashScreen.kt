@@ -12,22 +12,35 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.unit.sp
 import com.alirezahalvaei.homanegar.core.local.LocalStrings
+import com.alirezahalvaei.homanegar.domain.business.BusinessCatalog
 
 @Composable
 fun SplashScreen(){
 
     val strings= LocalStrings.current
+    val palette= BusinessCatalog.defaultPalette
+
+    val deep=Color(0xFF070A1A)
+    val primary=Color(palette.primary)
+    val secondary=Color(palette.secondary)
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0XFF4F46E5)),
+            .background(
+                Brush.linearGradient(
+                    listOf(deep, lerp(deep,primary,0.45f), lerp(deep,secondary,0.45f))
+                )
+            ),
         contentAlignment = Alignment.Center
     ){
         Column(
