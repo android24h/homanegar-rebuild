@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -23,9 +24,12 @@ import androidx.compose.ui.unit.sp
 import com.alirezahalvaei.homanegar.core.local.LocalStrings
 import com.alirezahalvaei.homanegar.domain.business.BusinessCatalog
 import com.alirezahalvaei.homanegar.presentation.theme.LocalBrand
+import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen(){
+fun SplashScreen(
+    onFinished:()-> Unit
+){
 
     val strings= LocalStrings.current
     val brand = LocalBrand.current
@@ -33,6 +37,11 @@ fun SplashScreen(){
     val deep=Color(0xFF070A1A)
     val primary=brand.primary
     val secondary=brand.secondary
+
+    LaunchedEffect(Unit) {
+        delay(3000)
+        onFinished()
+    }
 
     Box(
         modifier = Modifier

@@ -9,6 +9,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
 import com.alirezahalvaei.homanegar.domain.business.BusinessCatalog
+import com.alirezahalvaei.homanegar.presentation.app.AppRoot
 
 import com.alirezahalvaei.homanegar.presentation.splash.SplashScreen
 import com.alirezahalvaei.homanegar.presentation.theme.HomaNegarTheme
@@ -20,13 +21,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge(statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT))
         setContent {
-            HomaNegarTheme(
-                palette = BusinessCatalog.defaultPalette,
-                darkTheme = isSystemInDarkTheme()
-            ) {
-                SplashScreen()
-
-            }
+            AppRoot()
 
         }
     }
