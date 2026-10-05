@@ -22,16 +22,17 @@ import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.unit.sp
 import com.alirezahalvaei.homanegar.core.local.LocalStrings
 import com.alirezahalvaei.homanegar.domain.business.BusinessCatalog
+import com.alirezahalvaei.homanegar.presentation.theme.LocalBrand
 
 @Composable
 fun SplashScreen(){
 
     val strings= LocalStrings.current
-    val palette= BusinessCatalog.defaultPalette
+    val brand = LocalBrand.current
 
     val deep=Color(0xFF070A1A)
-    val primary=Color(palette.primary)
-    val secondary=Color(palette.secondary)
+    val primary=brand.primary
+    val secondary=brand.secondary
 
     Box(
         modifier = Modifier
