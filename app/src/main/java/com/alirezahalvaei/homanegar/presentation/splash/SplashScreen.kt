@@ -3,17 +3,25 @@ package com.alirezahalvaei.homanegar.presentation.splash
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -33,6 +41,8 @@ import androidx.compose.ui.unit.sp
 import com.alirezahalvaei.homanegar.core.local.LocalStrings
 import com.alirezahalvaei.homanegar.presentation.theme.LocalBrand
 import kotlinx.coroutines.delay
+import kotlin.math.PI
+import kotlin.math.sin
 
 @Composable
 fun SplashScreen(
@@ -59,6 +69,14 @@ fun SplashScreen(
         exit.animateTo(1f,tween(600))
         onFinished()
     }
+    val infinite=rememberInfiniteTransition(label = "splash")
+
+    val pulse by infinite.animateFloat(
+        initialValue = 0f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(tween(2200, easing = LinearEasing)),
+        label = "pulse"
+    )
 
     Box(
         modifier = Modifier
@@ -119,17 +137,41 @@ fun SplashScreen(
 
         }
 
-
-
-        Text(
-            text = strings.loading,
-            color = Color.White.copy(alpha = 0.5f),
-            fontSize = 12.sp,
+        Column(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .navigationBarsPadding()
-                .padding(bottom = 36.dp)
-        )
+                .padding(bottom = 36.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            LoadingDots(pulse)
+            Spacer(Modifier.height(10.dp))
+            Text(
+                text = strings.loading,
+                color = Color.White.copy(alpha = 0.5f),
+                fontSize = 12.sp
+            )
+        }
 
+
+    }
+}
+
+@Composable
+private fun LoadingDots(phase: Float) {
+    Row(horizontalArrangement = Arrangement.spacedBy(7.dp)) {
+        repeat(3) { i ->
+            val local = ((phase * 3f - i) % 3f + 3f) % 3f
+            val lift = if (local < 1f) sin(local * PI).toFloat() else 0f
+            Box(
+                Modifier
+                    .size(8.dp)
+                    .graphicsLayer {
+                        translationY = -lift * 8.dp.toPx()
+                        alpha = 0.4f + lift * 0.6f
+                    }
+                    .background(Color.White, CircleShape)
+            )
+        }
     }
 }
