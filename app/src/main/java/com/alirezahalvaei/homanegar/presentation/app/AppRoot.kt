@@ -9,10 +9,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.alirezahalvaei.homanegar.core.calander.CalendarSystem
+import com.alirezahalvaei.homanegar.core.locale.AppLanguage
 import com.alirezahalvaei.homanegar.domain.business.BusinessCatalog
+import com.alirezahalvaei.homanegar.domain.business.model.AppSettings
+import com.alirezahalvaei.homanegar.domain.business.model.ThemeMode
 import com.alirezahalvaei.homanegar.presentation.splash.SplashScreen
 import com.alirezahalvaei.homanegar.presentation.theme.HomaNegarTheme
 
@@ -51,12 +56,13 @@ fun AppRoot() {
                         .background(MaterialTheme.colorScheme.background),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        text = "صفحه‌ی اصلی",
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
+
+                Text(
+                    text = "صفحه اصلی"
+                )
                 }
             }
         }
     }
 }
+

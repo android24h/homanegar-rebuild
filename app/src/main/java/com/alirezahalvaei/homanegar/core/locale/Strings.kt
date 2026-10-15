@@ -2,24 +2,26 @@ package com.alirezahalvaei.homanegar.core.locale
 
 import androidx.compose.runtime.staticCompositionLocalOf
 
-val LocalStrings= staticCompositionLocalOf<Strings> { FaStrings }
+enum class AppLanguage { EA, FA }
 
-abstract class Strings{
+val LocalStrings = staticCompositionLocalOf<Strings> { FaStrings }
+
+abstract class Strings {
     abstract val appName: String
     abstract val tagline: String
     abstract val loading: String
 }
 
-object FaStrings: Strings(){
-    override val appName= "همانگار"
-    override val tagline= "مدیریت ساده،کسب و کار بهتر"
-    override val loading= "در حال آماده سازی..."
+object FaStrings : Strings() {
+    override val appName = "همانگار"
+    override val tagline = "مدیریت ساده،کسب و کار بهتر"
+    override val loading = "در حال آماده سازی..."
 
 }
 
-object EnStrings: Strings(){
-    override val appName="HomaNegar"
-    override val tagline="Simple management, better business"
-    override val loading="Getting things ready…"
+object EnStrings : Strings() {
+    override val appName = "HomaNegar"
+    override val tagline = "Simple management, better business"
+    override val loading = "Getting things ready…"
 
 }
