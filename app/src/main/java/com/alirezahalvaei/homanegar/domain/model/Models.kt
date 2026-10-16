@@ -1,5 +1,4 @@
-package com.alirezahalvaei.homanegar.domain.business.model
-
+package com.alirezahalvaei.homanegar.domain.model
 import com.alirezahalvaei.homanegar.core.calander.CalendarSystem
 import com.alirezahalvaei.homanegar.core.locale.AppLanguage
 
