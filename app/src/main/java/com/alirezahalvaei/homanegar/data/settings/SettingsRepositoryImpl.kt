@@ -22,6 +22,7 @@ class SettingsRepositoryImpl(
 
     private val _settings = MutableStateFlow(read())
 
+
     override val settings: StateFlow<AppSettings> = _settings.asStateFlow()
 
     override fun setLanguage(language: AppLanguage) {
@@ -40,7 +41,6 @@ class SettingsRepositoryImpl(
     }
 
     private fun read(): AppSettings {
-
 
         val defaultLanguage =
             if (Locale.getDefault().language == "fa") AppLanguage.FA else AppLanguage.EN
@@ -66,8 +66,6 @@ class SettingsRepositoryImpl(
         } ?: ThemeMode.SYSTEM
 
         return AppSettings(language, calendar, theme)
-
-
     }
 
     private companion object {

@@ -1,5 +1,5 @@
 package com.alirezahalvaei.homanegar.domain.model
-import com.alirezahalvaei.homanegar.core.calander.CalendarSystem
+import com.alirezahalvaei.homanegar.core.calendar.CalendarSystem
 import com.alirezahalvaei.homanegar.core.locale.AppLanguage
 
 enum class ThemeMode { SYSTEM, LIGHT, DARK }
