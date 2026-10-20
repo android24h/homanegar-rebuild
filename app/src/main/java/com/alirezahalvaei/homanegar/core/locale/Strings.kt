@@ -2,8 +2,9 @@ package com.alirezahalvaei.homanegar.core.locale
 
 import androidx.compose.runtime.staticCompositionLocalOf
 
-enum class AppLanguage { EN, FA }
+enum class AppLanguage { FA, EN }
 
+fun stringFor(language: AppLanguage): Strings= if (language== AppLanguage.FA) FaStrings else EnStrings
 val LocalStrings = staticCompositionLocalOf<Strings> { FaStrings }
 
 abstract class Strings {
