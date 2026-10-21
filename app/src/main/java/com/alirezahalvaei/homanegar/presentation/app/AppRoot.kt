@@ -9,10 +9,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -20,6 +25,7 @@ import com.alirezahalvaei.homanegar.core.calendar.CalendarSystem
 import com.alirezahalvaei.homanegar.core.locale.AppLanguage
 import com.alirezahalvaei.homanegar.core.locale.LocalStrings
 import com.alirezahalvaei.homanegar.core.locale.stringFor
+import com.alirezahalvaei.homanegar.data.settings.SettingsRepositoryImpl
 import com.alirezahalvaei.homanegar.domain.business.BusinessCatalog
 import com.alirezahalvaei.homanegar.domain.model.AppSettings
 import com.alirezahalvaei.homanegar.domain.model.ThemeMode
@@ -33,14 +39,16 @@ object Routes {
 }
 
 @Composable
-fun AppRoot() {
+fun AppRoot(
+    viewModel: AppViewModel= hiltViewModel()
+) {
+
+    val setting by viewModel.settings.collectAsState()
 
 
-    val setting = AppSettings(
-        language = AppLanguage.EN,
-        calendar = CalendarSystem.JALALI,
-        themeMode = ThemeMode.SYSTEM
-    )
+
+
+
 
     CompositionLocalProvider(
         LocalStrings provides stringFor(setting.language),

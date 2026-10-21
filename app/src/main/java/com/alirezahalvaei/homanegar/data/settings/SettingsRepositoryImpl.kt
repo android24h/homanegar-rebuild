@@ -8,15 +8,18 @@ import com.alirezahalvaei.homanegar.domain.model.AppSettings
 import com.alirezahalvaei.homanegar.domain.model.ThemeMode
 
 import com.alirezahalvaei.homanegar.domain.repository.SettingsRepository
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.util.Locale
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class SettingsRepositoryImpl(
-    context: Context
+@Singleton
+class SettingsRepositoryImpl @Inject constructor(
+    @ApplicationContext context: Context
 ) : SettingsRepository {
-
 
     private val prefs = context.getSharedPreferences("homanegar_settings", Context.MODE_PRIVATE)
 
