@@ -180,7 +180,7 @@
 |---|---|---|---|---|---|
 | ۰ | اسکلت پروژه | ساختن نیازمحور | ✓ | `settings.gradle.kts`، `build.gradle.kts` (ریشه و app)، `gradle/libs.versions.toml`، `AndroidManifest.xml`، `di/MyApplication.kt`، `MainActivity.kt`، `res/values/*` | ✅ |
 | ۱ | اسپلش | ساختن نیازمحور | ✓ | `presentation/splash/SplashScreen.kt`، `core/locale/Strings.kt` (بخش پایه)، `presentation/theme/Theme.kt`، `domain/business/BusinessCatalog.kt` (فقط `BusinessPalette`)، `presentation/app/AppRoot.kt` (NavHost ساده)، `MainActivity.kt` | ✅ |
-| ۲ | تنظیمات پایه (زبان، تم، تقویم، RTL) | ساختن نیازمحور | ۳ | `domain/model/Models.kt` (`AppSettings`، `ThemeMode`)، `domain/repository/Repositories.kt` (`SettingsRepository`)، `data/settings/SettingsRepositoryImpl.kt`، `presentation/app/AppViewModel.kt`، `presentation/components/Components.kt` (`LocalAppSettings`)، `core/calendar/AppCalendar.kt` (`CalendarSystem`)، `di/Modules.kt` (فقط `RepositoryModule` با `bindSettingsRepository`) | 🔄 |
+| ۲ | تنظیمات پایه (زبان، تم، تقویم، RTL) | ساختن نیازمحور | ۳ | `domain/model/Models.kt` (`AppSettings`، `ThemeMode`)، `domain/repository/Repositories.kt` (`SettingsRepository`)، `data/settings/SettingsRepositoryImpl.kt`، `presentation/app/AppViewModel.kt`، `presentation/components/Components.kt` (`LocalAppSettings`)، `core/calendar/AppCalendar.kt` (`CalendarSystem`)، `di/Modules.kt` (فقط `RepositoryModule` با `bindSettingsRepository`) | ✅ (۱۴ آبان ۱۴۰۵؛ هم‌سان‌سازی اسم‌ها موکول) |
 | ۳ | دیتابیس و Hilt (اولین جدول: Section) | ساختن نیازمحور | ۴ و ۵ | `data/local/entity/Entities.kt`، `data/local/dao/Daos.kt`، `data/local/database/AppDatabase.kt`، `data/repository/Mappers.kt`، `data/repository/RepositoryImpls.kt`، `di/Modules.kt`، `Models.kt` (`Section`، `SectionKind`) | ⬜ |
 | ۴ | انتخاب کسب‌وکار (Onboarding) | ساختن نیازمحور | ۶ و ۷ | `domain/business/BusinessCatalog.kt`، `domain/usecase/UseCases.kt` (`SetupBusinessUseCase`)، جدول `CatalogItem`، `presentation/onboarding/BusinessPickerScreen.kt`، `presentation/theme/AppIcons.kt`، بخش‌های لازم از `Components.kt` | ⬜ |
 | ۵ | پوسته‌ی اپ و ناوبری | ساختن نیازمحور | ۸ | `presentation/app/AppRoot.kt` (Routes کامل، BottomBar، `navigateTab`) | ⬜ |
@@ -202,7 +202,7 @@
 
 ### گام فعلی
 
-**گام ۲ 🔄، قدم ۲-۵** (قدم‌های ۰ و ۲-۱ تا ۲-۴ ✅). **اکانت و چت عوض شد** (قانون ۱۱).
+**گام ۲ ✅ بسته شد (۱۴ آبان ۱۴۰۵). گام بعدی: گام ۳ (دیتابیس و Hilt)، هنوز شروع نشده.** گام ۲ بعد از یک وقفه‌ی طولانی **مرور سطحی** شد و سه تست قبول شد: تغییر زنده‌ی زبان (متن و جهت)، تغییر تم در هر سه حالت، و ماندن انتخاب‌ها بعد از بستن کامل اپ. سؤال‌های نهایی جواب داده شد؛ نقطه‌ی ضعف باقی‌مونده: **ترتیب مقداردهی داخل کلاس** (`prefs` قبل از `_settings`؛ ترکیدن موقع اجرا، نه موقع ساخت) و **مسیر برگشت** در جریان داده (`StateFlow` ← `collectAsState` ← کشیده شدن دوباره‌ی صفحه). این دو را اول چت گام ۳ با یک سؤال مرور کن (قانون ۱۱).
 
 **کجا هستیم:**
 - **۲-۳ ✅** (کامیت `97c6e12`): `stringsFor` در `Strings.kt`؛ تابلوی `LocalAppSettings` در `presentation/components/Components.kt`؛ در ریشه سه اعلان: متن‌ها (`stringsFor(settings.language)`)، تنظیمات، جهت (`if (settings.language == AppLanguage.FA) Rtl else Ltr`).
@@ -210,9 +210,17 @@
 - صفحه‌ی اصلی موقت: `Text` با `fillMaxWidth()` که `LocalStrings.current.appName` رو نشون می‌ده (برای دیدن جهت).
 - `darkTheme` در ریشه هنوز `isSystemInDarkTheme()` است.
 
-**قدم بعدی (۲-۵):** توابع `setLanguage` و `setThemeMode` در `AppViewModel` (اینجا `viewModelScope` لازم نیست چون مخزن تنظیمات هم‌زمانه؛ `viewModelScope` در گام ۳)؛ دکمه‌ی موقت تغییر زبان و تم در صفحه‌ی اصلی؛ `darkTheme` از روی `themeMode` (`when`)؛ دیدن تغییر **زنده** بدون بستن اپ، و **ماندن** انتخاب بعد از بستن و باز کردن اپ. بعد **بستن گام ۲** (چک‌لیست، سؤال‌ها و نکته‌های طلایی، جزوه در بخش ۸، برچسب `step-02`).
+**وضعیت واقعی (۱۲ آبان ۱۴۰۵):** کد ۲-۵ در پروژه‌ی تمرینی نوشته شده و مرور شد: `setLanguage`، `setCalendar` و `setTheme` در `AppViewModel`؛ دو دکمه‌ی موقت در صفحه‌ی اصلی؛ `darkTheme` با `when`. تغییر زبان **زنده** تست شد (متن و جهت هر دو عوض می‌شن). ⚠️ هنوز تأیید **نشده**: (الف) دکمه‌ی تم و رنگ هر سه حالت، (ب) **ماندن** زبان و تم بعد از بستن کامل اپ و باز کردن دوباره.
 
-**اول چت بعدی، این فایل‌ها رو بفرست:** `presentation/app/AppRoot.kt`، `presentation/app/AppViewModel.kt`، `domain/model/Models.kt`.
+**کارهای مونده تا بستن گام ۲** (حدود ۱ ساعت):
+1. ✅ تأیید (الف) و (ب) بالا (انجام شد).
+2. **(تصمیم علیرضا، ۱۲ آبان: به بعد موکول شد؛ تم تست شد و درسته)** هم‌سان‌سازی با مرجع (قانون ۱۵) که باید قبل از بستن نهایی یا اول چت گام ۳ انجام بشه: `private val` برای مخزن در `AppViewModel`؛ `setTheme` ← `setThemeMode`؛ اعلان `LocalAppSettings` در ریشه و عوض کردن اسم `LocalSetting` به `LocalAppSettings`؛ `stringFor` ← `stringsFor`؛ فایل‌ها: `AppCalander.kt` ← `AppCalendar.kt`، `SettingsRepository.kt` ← `Repositories.kt`؛ پاک کردن پوشه‌ی `ui/theme`؛ پاک کردن `import`های اضافه در `AppRoot`. پیشنهاد کامیت: `refactor: align step 2 names with reference`.
+3. ✅ جواب سؤال‌های نهایی (بخش ۸، گام ۲) بدون نگاه (چهار سؤال اصلی جواب داده شد: ۱، ۴، ۶، ۸).
+4. ✅ جزوه‌ی گام ۲ نهایی شد. ⬜ **هنوز باید انجام بشه:** `git status`، کامیت، برچسب `step-02` و فرستادنش؛ و چت جدید برای گام ۳.
+
+**(متن قدیمی قدم ۲-۵، برای مرجع):** توابع `setLanguage` و `setThemeMode` در `AppViewModel` (اینجا `viewModelScope` لازم نیست چون مخزن تنظیمات هم‌زمانه؛ `viewModelScope` در گام ۳)؛ دکمه‌ی موقت تغییر زبان و تم در صفحه‌ی اصلی؛ `darkTheme` از روی `themeMode` (`when`)؛ دیدن تغییر **زنده** بدون بستن اپ، و **ماندن** انتخاب بعد از بستن و باز کردن اپ. بعد **بستن گام ۲** (چک‌لیست، سؤال‌ها و نکته‌های طلایی، جزوه در بخش ۸، برچسب `step-02`).
+
+**اول چت بعدی (گام ۳)، این فایل‌ها رو بفرست:** `presentation/app/AppRoot.kt`، `presentation/app/AppViewModel.kt`، `domain/model/Models.kt`، `di/module/RepositoryModule.kt`، `gradle/libs.versions.toml` و `app/build.gradle.kts`.
 
 **جدول گام ۲ (به‌روز):**
 
@@ -223,8 +231,8 @@
 | ۲-۲. مخزن تنظیمات (`SettingsRepository` در دامنه، `SettingsRepositoryImpl` با `SharedPreferences` و `StateFlow` در داده) | «انتخاب‌ها باید بعد از بستن اپ بمونن و تغییرشون به همه خبر داده بشه» | ✅ جمعه ۲۴ مهر |
 | ۲-۳. اعلان روی تابلوها در ریشه (`LocalStrings`، `LocalAppSettings`، `LocalLayoutDirection`) | «فقط زبان تعیین بشه؛ متن و جهت خودکار بیاد» | ✅ سه‌شنبه ۲۸ مهر |
 | ۲-۴. `AppViewModel` با هیلت و `hiltViewModel()` (+ برچسب‌های هیلت روی `SettingsRepositoryImpl` و `RepositoryModule` با `@Binds`) | «تنظیمات واقعی، نه فرم دستی؛ یک مخزن برای کل اپ؛ زنده موندن با چرخش گوشی» | ✅ چهارشنبه ۲۹ مهر |
-| ۲-۵. دکمه‌ی موقت تغییر زبان و تم؛ تغییر **بدون** ساخت دوباره‌ی فعالیت | دیدن اثر | ⬜ حدود ۱ ساعت |
-| بستن گام: چک‌لیست، سؤال‌ها و نکته‌های طلایی، بانک مصاحبه، فایل راهنما، برچسب `step-02` | — | ⬜ حدود ۱ ساعت |
+| ۲-۵. دکمه‌ی موقت تغییر زبان و تم؛ تغییر **بدون** ساخت دوباره‌ی فعالیت | دیدن اثر | 🔄 کد نوشته و مرور شد؛ تست تم و ماندگاری مونده |
+| بستن گام: چک‌لیست، سؤال‌ها و نکته‌های طلایی، بانک مصاحبه، فایل راهنما، برچسب `step-02` | — | ✅ (برچسب `step-02` هنوز زده نشده) |
 
 **آنچه تا اینجای گام ۲ انجام شد:**
 - **قدم ۰:** کار کامیت‌نشده‌ی قدم ۱-۷ اسپلش (هاله‌ها، ذرات، موج‌ها، لوگو؛ ۲۲۲ خط) پیدا شد که تمرین ۱ جلسه‌ی تسلط هم لابه‌لاش بود؛ دستی به مرجع برگشت (ترتیب `LaunchedEffect`، حذف `SplashPreview`، دو توضیح مرجع). باقی‌مونده‌ی تغییر اسم‌های `Strings.kt` انجام شد (خط پکیج `core.locale`، `staticCompositionLocalOf`، پیش‌فرض `FaStrings`، `FaStrings`/`EnStrings`، `tagline`، متن فارسی با نیم‌فاصله). اسپلش اشتباهی همراه کامیت `refactor(locale)` رفت؛ چون فرستاده شده بود، تاریخچه بازنویسی نشد. راهنما کامیت شد، `step-01` زده و فرستاده شد. پوشه‌ی تمرینی `tamrin` پاک شد.
@@ -264,6 +272,11 @@
 | ۲۵ | «صفحه `SettingsRepository` می‌خواد» | صفحه فقط `AppViewModel` می‌خواد؛ **`AppViewModel`** مخزن رو می‌خواد |
 | ۲۶ | «الان با هیلت وابستگی رو دستی تزریق کردیم» | **دستی** = خودمون می‌سازیم و پاس می‌دیم (`SettingsRepositoryImpl(context)`)؛ **هیلت** = خودکار، ما فقط دستور می‌نویسیم |
 | ۲۷ | `enum class AppLanguage { EN, FA }` | مثل مرجع: `{ FA, EN }` |
+| ۲۸ | «`LIGHT` مقدار `true` می‌ده» (مرور ۱۲ آبان) | در `when`، `LIGHT -> false`. جواب سؤال «تیره هست؟» برای روشن می‌شه «نه». نتیجه درست بود، ولی جمله‌ی غلط بعداً باگ می‌سازه |
+| ۲۹ | «`@Singleton` یعنی ساخت نمونه رو به هیلت می‌دیم» | ساختن کار `@Inject constructor` است. `@Singleton` یعنی **فقط یک نمونه** در کل اپ. بدون اون هر `ViewModel` مخزن جدا و `StateFlow` جدا می‌گیره و خبر تغییر به بقیه نمی‌رسه |
+| ۳۰ | «با ارث‌بری از `interface` نسخه‌ی تست می‌سازیم» | کلاس رابط رو **پیاده‌سازی** می‌کنه (`: SettingsRepository`)؛ ارث‌بری برای کلاس‌هاست |
+| ۳۱ | `val repository` عمومی در `AppViewModel` | `private val`؛ صفحه نباید مستقیم به مخزن دست بزنه |
+| ۳۲ | `LocalSetting` به‌جای `LocalAppSettings` | اسم باید **محتوا** رو بگه و مثل مرجع باشه (قانون ۱۵) |
 
 **نقشه‌ی اتاق‌های `SplashScreen.kt`** (برای مرور):
 
@@ -305,8 +318,8 @@
 - [x] الگوی Repository: interface در domain، پیاده‌سازی در data
 - [x] ذخیره با `SharedPreferences` و پخش تغییرات با `MutableStateFlow` / `StateFlow`
 - [x] Hilt عملی: `@Inject constructor`، `@Singleton`، `@ApplicationContext`، اولین ماژول با `@Binds`، `@HiltViewModel` و `hiltViewModel()` (۲-۴)
-- [ ] `ViewModel`، `viewModelScope`، `collectAsState` ← `ViewModel` و `collectAsState` ✅ در ۲-۴؛ `viewModelScope` فقط مفهوم در ۲-۵، عملی در گام ۳
-- [ ] `CompositionLocalProvider` برای `LocalAppSettings` و جهت راست‌به‌چپ (`LocalLayoutDirection`) ✅ در ۲-۳؛ عوض شدن زبان و تم بدون ساخت دوباره‌ی Activity ← ۲-۵
+- [x] `ViewModel`، `viewModelScope`، `collectAsState` ← `ViewModel` و `collectAsState` ✅ در ۲-۴؛ `viewModelScope` فقط مفهوم در ۲-۵، عملی در گام ۳
+- [x] `CompositionLocalProvider` برای `LocalAppSettings` و جهت راست‌به‌چپ (`LocalLayoutDirection`) ✅ در ۲-۳؛ عوض شدن زبان و تم زنده ✅ در ۲-۵ (اعلان `LocalAppSettings` در ریشه هنوز مونده، جزو هم‌سان‌سازی موکول)
 
 **گام ۳: دیتابیس (اولین جدول: Section)**
 - [ ] Room: `@Entity`، `@Dao` (`@Query`، `@Insert`، `@Update`، `@Delete`)، `@Database`، `Room.databaseBuilder`
@@ -762,6 +775,48 @@ settings: ماژول‌ها و مخزن‌ها · build ریشه: معرفی پ�
 
 ---
 
+### گام ۲: تنظیمات پایه ✅
+
+**مسیر داده (۶ ایستگاه):** مدل (`AppSettings`، `ThemeMode`) ← قرارداد (`SettingsRepository`) ← پیاده‌سازی (`SettingsRepositoryImpl`) ← سیم‌کشی (`RepositoryModule`) ← واسط (`AppViewModel`) ← صفحه (`AppRoot`).
+
+**مفهوم‌ها برای دفتر (سطح ۱، بدون کد):**
+
+| مفهوم | تصمیم (چرا) | دام (کجا خراب می‌شه) |
+|---|---|---|
+| مدل تنظیمات | `data class` تا مقایسه بر اساس محتوا باشه؛ `enum` تا فقط مقدار مجاز بیاد | بدون `data`، دو نمونه‌ی برابر «متفاوت» حساب می‌شن و `StateFlow` بی‌خود خبر می‌ده |
+| قرارداد مخزن | رابط در دامنه، پیاده‌سازی در داده (وارونگی وابستگی) | وابسته شدن دامنه به جزئیات ذخیره‌سازی |
+| تنظیمات زنده | `StateFlow` به‌جای تابع `get` | تابع فقط عکس لحظه‌ای می‌ده و صفحه خودکار به‌روز نمی‌شه |
+| مخزن | یک نمونه (`@Singleton`)؛ `Context` اپ؛ `prefs` قبل از `_settings`؛ خوندن با مقدار پیش‌فرض | چند نمونه ← خبر نرسیدن؛ `Context` فعالیت ← نشت حافظه؛ ترتیب برعکس ← ترکیدن اپ |
+| سیم‌کشی | `@Binds` برای وصل کردن رابط به پیاده‌سازی | بدون اون، پروژه ساخته نمی‌شه (این خوبه) |
+| جهت و متن | سه تابلو در ریشه (`LocalStrings`، `LocalAppSettings`، `LocalLayoutDirection`) | بدون اعلان جهت، جهت از زبان **گوشی** میاد |
+| تم | `when` روی `enum` بدون `else` | اضافه شدن حالت جدید ← خطای ساخت (خوب) |
+
+**نکته‌های طلایی:**
+1. `data class` = مقایسه بر اساس **محتوا**؛ بدون اون `==` فقط می‌پرسه «همون یک نمونه‌ست؟».
+2. رابط در دامنه، پیاده‌سازی در داده؛ جهت وابستگی همیشه به‌سمت دامنه.
+3. `@Inject constructor` = **چطور بساز**؛ `@Singleton` = **فقط یکی**؛ `@Binds` = **کدوم کلاس جواب این رابط‌ه**.
+4. `MutableStateFlow` خصوصی، `StateFlow` عمومی: فقط صاحب داده می‌تونه عوضش کنه.
+5. `ViewModel` فقط واسطه‌ست و رابط رو می‌خواد، نه `Impl` رو.
+6. جهت RTL/LTR رو خودمون در ریشه اعلام می‌کنیم؛ پیش‌فرضش از زبان گوشی میاد، نه انتخاب کاربر.
+7. `when` روی `enum` وقتی مقدار تولید می‌کنه اجباراً کامله ← اشتباه موقع ساخت گرفته می‌شه، نه موقع اجرا.
+
+**سؤال‌های نهایی گام ۲ (بدون نگاه جواب بده):**
+1. مسیر کلیک دکمه‌ی زبان رو از دکمه تا عوض شدن متن، با کلمه‌های خودت بگو.
+2. چرا `data class` برای `AppSettings` مهمه؟ ربطش به `StateFlow` چیه؟
+3. چرا رابط مخزن در دامنه‌ست؟ یک فایده‌ی عملی بگو.
+4. `@Singleton` چی کار می‌کنه؟ بدون اون دقیقاً چه مشکلی پیش میاد؟
+5. فرق `@Binds` و `@Provides`؟ کدوم رو برای دیتابیس لازم داریم؟
+6. چرا `prefs` باید قبل از `_settings` تعریف بشه؟
+7. اگه ذخیره‌ی `"theme"` در فایل خراب باشه، اپ چی می‌شه؟ چرا؟
+8. بدون `LocalLayoutDirection provides ...` چه چیزی خراب می‌شه؟
+9. اگه به `ThemeMode` حالت چهارم اضافه کنیم، `when` چه می‌شه؟
+
+**نکته‌ی کار با هوش مصنوعی (قانون ۱۶):** اگه از هوش مصنوعی خواستی چیزی رو «آزمایش کنی» و دقیق نگفت **چه کاری** (کد بنویسم یا فقط اجرا کنم)، همون‌جا بپرس. دستور مبهم یک ساعت بی‌راهه می‌سازه. و کدی که هوش مصنوعی «درست» می‌دونه رو با مرجع تطبیق بده (اسم‌ها و پکیج‌ها).
+
+**ارزش لینکدین (قانون ۱۸): ⚠️ به‌تنهایی ضعیف.** ویدیوی کوتاه تغییر زبان و تم نمایش خوبی دارد، ولی بهتره با گام ۳ (ماندگاری در دیتابیس) یک پست بشه. درس فنی: «چرا جهت رو خودم اعلام کردم، نه زبان گوشی».
+
+---
+
 ## ۹. جعبه‌ابزار فهم کد
 
 ### فرمول پنج‌سؤالی (برای هر کدی، حتی کد هوش مصنوعی)
@@ -1201,4 +1256,19 @@ fun CounterScreen(viewModel: CounterViewModel = hiltViewModel()) {
 <details><summary>تزریق وابستگی دستی در برابر هیلت؟ (۲-۴)</summary>
 
 **دستی:** خودمون می‌سازیم و پاس می‌دیم (`SettingsRepositoryImpl(context)`)؛ ساده‌ست ولی هر جا لازم باشه تکرار می‌شه، ممکنه چند نسخه ساخته بشه، و صفحه باید پیاده‌سازی رو بشناسه. **هیلت:** فقط دستور می‌نویسیم؛ ساختن، وصل کردن و مدیریت عمر (`@Singleton`) خودکاره و اشتباه‌ها موقع ساخت پروژه گرفته می‌شن.
+</details>
+
+<details><summary>فرق <code>@Singleton</code> و <code>@Inject constructor</code>؟ (مرور ۱۲ آبان)</summary>
+
+`@Inject constructor` به هیلت می‌گه **چطور** کلاس رو بسازه. `@Singleton` می‌گه **فقط یک نمونه** در کل اپ بسازه و همه از همون استفاده کنن. بدون اون هر درخواست‌کننده یک نمونه‌ی جدا می‌گیره.
+</details>
+
+<details><summary>چرا <code>StateFlow</code> به‌جای تابع <code>get</code>؟ (مرور ۱۲ آبان)</summary>
+
+تابع فقط یک عکس لحظه‌ای می‌ده و صفحه باید مدام بپرسه. `StateFlow` مقدار فعلی رو داره و هر تغییر رو به همه‌ی گوش‌دهنده‌ها خبر می‌ده، پس صفحه خودکار به‌روز می‌شه.
+</details>
+
+<details><summary>چرا <code>when</code> روی <code>enum</code> بدون <code>else</code> نوشته می‌شه؟ (مرور ۱۲ آبان)</summary>
+
+وقتی <code>when</code> مقدار تولید می‌کنه باید همه‌ی حالت‌ها رو پوشش بده. اگه حالت جدیدی به <code>enum</code> اضافه بشه، پروژه ساخته نمی‌شه و اشتباه موقع ساخت گرفته می‌شه، نه در دست کاربر.
 </details>
